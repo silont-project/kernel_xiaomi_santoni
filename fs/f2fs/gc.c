@@ -15,6 +15,7 @@
 #include <linux/freezer.h>
 #include <linux/pm_wakeup.h>
 #include <linux/msm_drm_notify.h>
+#include <linux/fb.h>
 #include <linux/power_supply.h>
 
 #include "f2fs.h"
@@ -331,12 +332,12 @@ void __init f2fs_init_rapid_gc(void)
 {
 	INIT_WORK(&rapid_gc_fb_worker, rapid_gc_fb_work);
 	wakeup_source_init(&gc_wakelock, "f2fs_rapid_gc_wakelock");
-	msm_drm_register_client(&fb_notifier_block);
+	fb_register_client(&fb_notifier_block);
 }
 
 void __exit f2fs_destroy_rapid_gc(void)
 {
-	msm_drm_unregister_client(&fb_notifier_block);
+	fb_unregister_client(&fb_notifier_block);
 	wakeup_source_trash(&gc_wakelock);
 }
 
